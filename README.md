@@ -1,4 +1,4 @@
-# ShingHuang
+# Hongtong Logistics
 Localize and automate logistics to make the work easier
 
 ## Organization
