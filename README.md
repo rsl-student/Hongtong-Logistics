@@ -6,6 +6,8 @@ Localize and automate logistics to make the work easier
 
 ## Technologies
  - Nodejs
+ - MySQL
+ - Angular
 
 ## Contributions
 
