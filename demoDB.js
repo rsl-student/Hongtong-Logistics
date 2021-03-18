@@ -64,9 +64,15 @@ app.get('/hongtong/:',(req,res)=>{
     })
 })*/
 
-/*app.delete('/hongtong/:', (req,res)=>{
-
-})*/
+app.delete('/hongtong/:id', (req,res)=>{
+    const id = req.params.id;
+    mysqlConnection.query('DELETE FROM containerslog WHERE ID_No = ?', id, (err, rows, field) =>{
+        if(!err)
+            res.send('Deleted Successfully');
+        else
+            console.log(err);
+    })
+});
 
 //changing db requires post
 /*\
