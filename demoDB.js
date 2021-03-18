@@ -50,10 +50,10 @@ app.get('/hongtong',(req,res)=>{
     })
 })
 
-/*
+
 //get a specific container
-app.get('/hongtong/:',(req,res)=>{
-    mysqlConnection.query('Select * from containerslog WHERE ID_NO = ',(err,rows,fields)=>{
+app.get('/hongtong/Select/:id',(req,res)=>{
+    mysqlConnection.query('Select * from containerslog WHERE ID_No = ?', req.params.id, (err,rows,fields)=>{
         if(!err)
         {
             res.send(rows); // same and res.json(row)
@@ -62,7 +62,7 @@ app.get('/hongtong/:',(req,res)=>{
         else
             console.log(err);
     })
-})*/
+})
 
 app.delete('/hongtong/:id', (req,res)=>{
     const id = req.params.id;
