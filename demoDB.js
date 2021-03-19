@@ -5,6 +5,7 @@ var app = express();
 const bodyparser = require('body-parser');
 
 app.use(bodyparser.json());
+//setup database connection
 var mysqlConnection = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -13,18 +14,16 @@ var mysqlConnection = mysql.createConnection({
     multipleStatements: true
 });
 
+//tests connection 
 mysqlConnection.connect((err) =>{
     if(!err)    
     {
-        /*var sql = "INSERT INTO containerslog (ID_No, CNTRNO, IMPORTER, CLIENT, SHIPPING_LINE, FRT, SOB, ETA, VESSEL, SUBMIT, RESULT, STATUS, DEL) VALUES ('1.11', 'OOCU7358131', 'HUAQIAO', '?', 'COS JHB 40', 'PRE', '2021-12/01', '2021-09/02', 'SaN CHRISTOBAL 102S', '', '', '', '')";
-        mysqlConnection.query(sql, function (err, result) {
-          if (err) throw err;
-          console.log("1 record inserted");
-        });*/
         mysqlConnection.query("SELECT * FROM containerslog", function (err, result, fields) {
           if (err) throw err;
+          //if connection does not succeeds
           console.log(result);
         });
+        //Connection succeeds
         console.log("Connection succeeded");
     }
     else
@@ -37,7 +36,7 @@ app.listen(3000, ()=>console.log('Express server is running at port no 3000'));
 //define routes
 //routes need get and post (app/router.get/post)
 //the path is the path you place after localhost:port/path ->default is '/'
-//get all from db
+//get all records from db
 app.get('/hongtong',(req,res)=>{
     mysqlConnection.query('Select * from containerslog',(err,rows,fields)=>{
         if(!err)
@@ -51,7 +50,7 @@ app.get('/hongtong',(req,res)=>{
 })
 
 
-//get a specific container
+//Selecting a specific record based on ID number
 app.get('/hongtong/Select/:id',(req,res)=>{
     mysqlConnection.query('Select * from containerslog WHERE ID_No = ?', req.params.id, (err,rows,fields)=>{
         if(!err)
@@ -64,6 +63,7 @@ app.get('/hongtong/Select/:id',(req,res)=>{
     })
 })
 
+//deleting a specific record
 app.delete('/hongtong/:id', (req,res)=>{
     const id = req.params.id;
     mysqlConnection.query('DELETE FROM containerslog WHERE ID_No = ?', id, (err, rows, field) =>{
@@ -74,27 +74,18 @@ app.delete('/hongtong/:id', (req,res)=>{
     })
 });
 
-//changing db requires post
-/*\
-CALL AddEditContainer(@ID_No, @CNTRNO, @IMPORTER, @CLIENT, @SHIPPING_LINE, @FRT, \
-    @SOB, @ETA, @VESSEL, @SUBMIT , @RESULT, @STATUS, @DEL)
- is for stored procedures
-
-     "SET ; SET ; SET ; SET ; \
-    SET ; SET ; SET ; SET ; SET ; \
-    SET ; SET ; SET ; SET @DEL = ?; ";
-*/
 //Inserting a record into the DB 
-app.post("/hontong/Insert", (req,res)=>{
+app.post("/hongtong/Insert", (req,res)=>{
     let htCont = req.body;
 
-    var sql = "INSERT INTO containerslog (ID_No, CNTRNO, IMPORTER, CLIENT, SHIPPING_LINE, FRT, SOB, ETA, \
-        VESSEL, SUBMIT, RESULT, STATUS, DEL) \
-        VALUES (@ID_No = ?, @CNTRNO = ?, @IMPORTER = ?, @CLIENT = ?, @SHIPPING_LINE = ?, @FRT = ?, @SOB = ?, \
-            @ETA = ?, @VESSEL = ?, @SUBMIT = ?, @RESULT = ?, @STATUS = ?, @DEL = ?)";
-    mysqlConnection.query(sql, [htCont.ID_No, htCont.CNTRNO, htCont.IMPORTER, htCont.CLIENT, htCont.SHIPPING_LINE, htCont.FRT, htCont.SOB, htCont.ETA, htCont.VESSEL, htCont.SUBMIT , htCont.RESULT, htCont.STATUS, htCont.DEL], (err, rows, fields)=>{
+    var sql = "INSERT INTO containerslog (ID_No, CNTRNO, IMPORTER, CLIENT, SHIPPING_LINE, \
+        FRT, SOB, ETA, VESSEL, SUBMIT, RESULT, STATUS, DEL) \
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    mysqlConnection.query(sql, [htCont.ID_No, htCont.CNTRNO, htCont.IMPORTER, htCont.CLIENT, 
+            htCont.SHIPPING_LINE, htCont.FRT, htCont.SOB, htCont.ETA, htCont.VESSEL, htCont.SUBMIT , 
+            htCont.RESULT, htCont.STATUS, htCont.DEL], (err, rows)=>{
         if(!err)
-           console.log(rows);
+           res.send('Inserted record id: ' + htCont.ID_No);
         else
             console.log(err);
     })
