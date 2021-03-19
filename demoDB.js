@@ -84,6 +84,7 @@ CALL AddEditContainer(@ID_No, @CNTRNO, @IMPORTER, @CLIENT, @SHIPPING_LINE, @FRT,
     SET ; SET ; SET ; SET ; SET ; \
     SET ; SET ; SET ; SET @DEL = ?; ";
 */
+//Inserting a record into the DB 
 app.post("/hontong/Insert", (req,res)=>{
     let htCont = req.body;
 
@@ -94,6 +95,20 @@ app.post("/hontong/Insert", (req,res)=>{
     mysqlConnection.query(sql, [htCont.ID_No, htCont.CNTRNO, htCont.IMPORTER, htCont.CLIENT, htCont.SHIPPING_LINE, htCont.FRT, htCont.SOB, htCont.ETA, htCont.VESSEL, htCont.SUBMIT , htCont.RESULT, htCont.STATUS, htCont.DEL], (err, rows, fields)=>{
         if(!err)
            console.log(rows);
+        else
+            console.log(err);
+    })
+});
+
+//Updating a specific record in DB
+app.put("/hongtong/Update/:id", (req,res)=>{
+    let htCont = req.body;
+    
+    mysqlConnection.query('UPDATE containerslog SET ID_No = ?, CNTRNO = ?, IMPORTER =? , CLIENT = ?, \
+    SHIPPING_LINE = ?, FRT = ?, SOB = ?, ETA = ?, VESSEL = ?, SUBMIT = ?, RESULT = ?, STATUS = ?, DEL = ? \
+    WHERE ID_No = ' + [req.params.id], [req.params.id, htCont.CNTRNO, htCont.IMPORTER, htCont.CLIENT, htCont.SHIPPING_LINE, htCont.FRT, htCont.SOB, htCont.ETA, htCont.VESSEL, htCont.SUBMIT , htCont.RESULT, htCont.STATUS, htCont.DEL], (err, rows, fields)=>{
+        if(!err)
+           res.send('Updated Successfully');
         else
             console.log(err);
     })
