@@ -15,6 +15,14 @@ Localize and automate logistics to make the work easier
 ### Ronald Looi
  - [rsl-student.github.io](https://rsl-student.github.io)
 
+# Packages used for project
+- nodemon
+- body-parser
+- dotenv
+- express
+- mongodb
+- mongoose
+
 # Notes
 - This backend project requires a .env file to hold the database of your choosing
 - It can be decalred as anything 
