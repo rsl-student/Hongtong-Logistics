@@ -5,7 +5,8 @@ const Post = require('../models/Post');
 
 //get all
 router.get('/', async (req, res) => {
-    try{
+    try
+    {
         const posts = await Post.find();
         res.json(posts);
     }
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
 
 //get one
 router.get('/:id', getPostID, (req, res) => {
-    res.json(res.post);
+    res.send(res.post);
 });
 
 //create one
@@ -106,7 +107,10 @@ router.patch('/:id', getPostID, async (req, res) => {
     }
     try
     {
-        const updatedPost = await res.post.save();
+        const updatedPost = await Post.updateOne({"ID_No": req.params.id}, {$set: {ID_No: req.body.ID_No, CNTRNO: req.body.CNTRNO, 
+            IMPORTER: req.body.IMPORTER, CLIENT: req.body.CLIENT, SHIPPING_LINE: req.body.SHIPPING_LINE, FRT: req.body.FRT, 
+            SOB: req.body.SOB, ETA: req.body.ETA, VESSEL: req.body.VESSEL, SUBMIT: req.body.SUBMIT, RESULT: req.body.RESULT, 
+            STATUS: req.body.STATUS, DEL: req.body.DEL}}); 
         res.json(updatedPost);
         console.log("Updated record");
     }
@@ -121,7 +125,7 @@ router.delete('/:id', getPostID, async (req, res) => {
     //req.params.id;
     try
     {
-        await res.post.remove();
+        await Post.deleteOne(res.post.ID_No);
         res.json({message: 'Deleted record'})
     }
     catch(error)
@@ -136,7 +140,8 @@ async function getPostID(req, res, next)
     let post
     try
     {
-        post = await Post.findById(req.params.id)
+        post = await Post.find({"ID_No": req.params.id});
+        console.log(post);
         if(post == null)
         {
             return res.status(404).json({message: "Cannot find record"});
