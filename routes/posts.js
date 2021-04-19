@@ -53,58 +53,6 @@ router.post('/', async (req, res) => {
 //update one 
 router.patch('/:id', getPostID, async (req, res) => {
     //req.params.id;
-    if(req.body.ID_No != null)
-    {
-        res.post.ID_No = req.body.ID_No;
-    }
-    if(req.body.CNTRNO != null)
-    {
-        res.post.CNTRNO = req.body.CNTRNO;
-    }
-    if(req.body.IMPORTER != null)
-    {
-        res.post.IMPORTER = req.body.IMPORTER;
-    }
-    if(req.body.CLIENT != null)
-    {
-        res.post.CLIENT = req.body.CLIENT;
-    }
-    if(req.body.SHIPPING_LINE != null)
-    {
-        res.post.SHIPPING_LINE = req.body.SHIPPING_LINE;
-    }
-    if(req.body.FRT != null)
-    {
-        res.post.FRT = req.body.FRT;
-    }
-    if(req.body.SOB != null)
-    {
-        res.post.SOB = req.body.SOB;
-    }
-    if(req.body.ETA != null)
-    {
-        res.post.ETA = req.body.ETA;
-    }
-    if(req.body.VESSEL != null)
-    {
-        res.post.VESSEL = req.body.VESSEL;
-    }
-    if(req.body.SUBMIT != null)
-    {
-        res.post.SUBMIT = req.body.SUBMIT;
-    }
-    if(req.body.RESULT != null)
-    {
-        res.post.RESULT = req.body.RESULT;
-    }
-    if(req.body.STATUS != null)
-    {
-        res.post.STATUS = req.body.STATUS;
-    }
-    if(req.body.DEL != null)
-    {
-        res.post.DEL = req.body.DEL;
-    }
     try
     {
         const updatedPost = await Post.updateOne({"ID_No": req.params.id}, {$set: {ID_No: req.body.ID_No, CNTRNO: req.body.CNTRNO, 
